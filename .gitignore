@@ -1,0 +1,18 @@
+# Fichiers temporaires
+*.tmp
+*.log
+*.swp
+*~
+
+# Clés privées SSH
+id_rsa
+id_ed25519
+*.pem
+*.key
+
+# Sauvegardes locales
+backups/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
