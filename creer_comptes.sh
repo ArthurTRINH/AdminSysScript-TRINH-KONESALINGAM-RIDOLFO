@@ -4,7 +4,7 @@
 # Projet : AdminSysScript
 # Contexte : Cabinet comptable Chiffres & Co
 # Script : creer_comptes.sh
-# Parties  : 3 et 4
+# Parties  : 3, 4 et 5
 # ==================================================
 
 set -Eeuo pipefail
@@ -19,7 +19,7 @@ if [[ "$EUID" -ne 0 ]]; then
 fi
 
 # 2. Verification des commandes necessaires
-for cmd in groupadd useradd usermod id getent mkdir chown; do
+for cmd in groupadd useradd usermod id getent mkdir chown chmod setfacl getfacl; do
     if ! command -v "$cmd" >/dev/null 2>&1; then
         echo "[ERREUR] Commande manquante : $cmd"
         exit 1
@@ -166,6 +166,59 @@ chown root:comptables /srv/commun/depot
 echo "[OK] Proprietaires et groupes attribues."
 
 # ==================================================
+# PARTIE 5 : PERMISSIONS ET ACL
+# ==================================================
+
+# appliquer_acl <dossier> <acl> <acl_par_defaut>
+#   <acl>            : droits des groupes sur le dossier lui-meme
+#   <acl_par_defaut> : modele copie sur les fichiers crees plus tard
+appliquer_acl() {
+    local chemin="$1" acl="$2" acl_defaut="$3"
+
+    setfacl -b "$chemin"                   # repart d'une ACL vide (idempotence)
+    setfacl -m "$acl" "$chemin"            # droits actuels
+    setfacl -d -m "$acl_defaut" "$chemin"  # ACL par defaut (heritage)
+}
+
+echo ""
+echo "[ETAPE 5] Permissions de base"
+
+# /srv doit etre traversable pour atteindre les sous-dossiers
+chown root:root /srv
+chmod 755 /srv
+
+# chmod AVANT setfacl : sinon il modifierait le masque ACL
+# 2770 = rwxrwx--- + setgid (les nouveaux fichiers prennent le groupe du dossier)
+chmod 2770 /srv/dossiers_clients /srv/rh /srv/commun
+# 3770 = idem + sticky bit (on ne supprime que ses propres fichiers)
+chmod 3770 /srv/commun/depot
+
+echo "[OK] Permissions de base appliquees."
+
+echo ""
+echo "[ETAPE 6] ACL et ACL par defaut"
+
+appliquer_acl /srv/dossiers_clients \
+    "g:comptables:rwx,g:direction:r-x" \
+    "g:comptables:rwx,g:direction:r-x"
+
+appliquer_acl /srv/rh \
+    "g:rh:rwx,g:direction:r-x" \
+    "g:rh:rwx,g:direction:r-x"
+
+appliquer_acl /srv/commun \
+    "g:comptables:rwx,g:rh:rwx,g:direction:rwx,g:stagiaire:r-x" \
+    "g:comptables:rwx,g:rh:rwx,g:direction:rwx,g:stagiaire:r-x"
+
+# Depot seul : le stagiaire peut entrer et creer (-wx) mais pas lister.
+# Pour les fichiers futurs il n'a AUCUN droit (---).
+appliquer_acl /srv/commun/depot \
+    "g:comptables:rwx,g:rh:rwx,g:direction:rwx,g:stagiaire:-wx" \
+    "g:comptables:rwx,g:rh:rwx,g:direction:rwx,g:stagiaire:---"
+
+echo "[OK] ACL appliquees."
+
+# ==================================================
 # VERIFICATION FINALE
 # ==================================================
 
@@ -196,6 +249,15 @@ ls -ld /srv/commun
 ls -ld /srv/commun/depot
 
 echo ""
+echo "=========================================="
+echo " VERIFICATION DES ACL"
+echo "=========================================="
+
+for dossier in /srv/dossiers_clients /srv/rh /srv/commun /srv/commun/depot; do
+    getfacl -p "$dossier"
+    echo ""
+done
+
 echo "=========================================="
 echo " CONFIGURATION TERMINEE"
 echo "=========================================="
