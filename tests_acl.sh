@@ -126,7 +126,7 @@ test_depot() {
     refuse  C2 "stagiaire $s2 ne liste pas depot" "$s2" ls "$DEPOT"
     refuse  C2 "stagiaire $s2 ne lit pas le fichier de $s1" "$s2" cat "$fs"
     refuse  C2 "stagiaire $s2 ne modifie pas le fichier de $s1" "$s2" bash -c 'echo x >> "$1"' _ "$fs"
-    refuse  C2 "stagiaire $s2 ne supprime pas le fichier de $s1" "$s2" rm "$fs"
+    refuse  C2 "stagiaire $s2 ne supprime pas le fichier de $s1" "$s2" rm -f "$fs"
     if [[ -e $fs ]]; then
         ok C2 "le fichier de $s1 existe toujours"
     else
@@ -140,7 +140,7 @@ test_depot() {
 
     reussit C2 "comptable ${COMPTABLES[0]} cree un fichier dans depot" "${COMPTABLES[0]}" touch "$fc"
     refuse  C2 "stagiaire $s1 ne lit pas le fichier d'un comptable dans depot" "$s1" cat "$fc"
-    refuse  C2 "stagiaire $s1 ne supprime pas le fichier d'un comptable" "$s1" rm "$fc"
+    refuse  C2 "stagiaire $s1 ne supprime pas le fichier d'un comptable" "$s1" rm -f "$fc"
 }
 
 test_prerequis

@@ -54,7 +54,7 @@ Ces répertoires sont créés automatiquement par le script `creer_comptes.sh`.
 | `/srv/commun` | Lecture/Écriture | Lecture/Écriture | Lecture/Écriture | Lecture |
 | `/srv/commun/depot` | Lecture/Écriture | Lecture/Écriture | Lecture/Écriture | Dépôt seul |
 
-Les permissions détaillées seront configurées dans une étape ultérieure avec les ACL Linux.
+Les permissions détaillées (permissions classiques et ACL, y compris ACL par défaut) sont configurées par `creer_comptes.sh` et vérifiées par `tests_acl.sh`.
 
 ## 6. Travail réalisé
 
@@ -169,6 +169,12 @@ AdminSysScript-TRINH-KONESALINGAM-RIDOLFO/
 │
 ├── installer.sh
 ├── creer_comptes.sh
+
+├── tests_acl.sh
+├── comptes.csv
+├── docs/
+│   └── resultats_tests_acl.txt
+└── README.md 
 ├── analyse_logs.sh
 ├── sauvegarde.sh
 ├── verifier.sh
@@ -216,9 +222,9 @@ AdminSysScript-TRINH-KONESALINGAM-RIDOLFO/
 ### Phase 2 — Gestion des comptes et permissions
 - [x] Développement du script de création des comptes.
 - [x] Développement de la création des répertoires.
-- [ ] Tests fonctionnels sur le serveur cible.
-- [ ] Configuration des permissions ACL.
-- [ ] Vérification des droits d'accès.
+- [x] Tests fonctionnels sur le serveur cible.
+- [x] Configuration des permissions ACL.
+- [x] Vérification des droits d'accès.
 
 ### Phase 3 — Sécurisation du serveur
 - [ ] Sécurisation SSH.

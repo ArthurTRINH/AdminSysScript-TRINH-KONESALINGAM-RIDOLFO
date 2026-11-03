@@ -1,0 +1,66 @@
+[OK] C2 comptable darksasuke cree un fichier dans dossiers_clients
+[OK] C2 comptable garen modifie le fichier de darksasuke (ACL par defaut)
+[OK] C2 direction imissher lit dossiers_clients
+[OK] C2 direction imissher ne modifie pas dossiers_clients
+[OK] C2 direction imissher ne cree pas de fichier dans dossiers_clients
+[OK] C2 direction roadtoplatine lit dossiers_clients
+[OK] C2 direction roadtoplatine ne modifie pas dossiers_clients
+[OK] C2 direction roadtoplatine ne cree pas de fichier dans dossiers_clients
+[OK] C2 hardstuckiron ne liste pas dossiers_clients
+[OK] C2 hardstuckiron ne lit pas dossiers_clients
+[OK] C2 freetoplay ne liste pas dossiers_clients
+[OK] C2 freetoplay ne lit pas dossiers_clients
+[OK] C2 bigbot ne liste pas dossiers_clients
+[OK] C2 bigbot ne lit pas dossiers_clients
+[OK] C2 gregoriz ne liste pas dossiers_clients
+[OK] C2 gregoriz ne lit pas dossiers_clients
+[OK] C2 rh hardstuckiron cree un fichier dans /srv/rh
+[OK] C2 rh freetoplay modifie le fichier de hardstuckiron
+[OK] C2 direction imissher lit /srv/rh
+[OK] C2 direction imissher ne modifie pas /srv/rh
+[OK] C2 direction roadtoplatine lit /srv/rh
+[OK] C2 direction roadtoplatine ne modifie pas /srv/rh
+[OK] C2 darksasuke ne liste pas /srv/rh
+[OK] C2 darksasuke ne lit pas /srv/rh
+[OK] C2 garen ne liste pas /srv/rh
+[OK] C2 garen ne lit pas /srv/rh
+[OK] C2 bigbot ne liste pas /srv/rh
+[OK] C2 bigbot ne lit pas /srv/rh
+[OK] C2 gregoriz ne liste pas /srv/rh
+[OK] C2 gregoriz ne lit pas /srv/rh
+[OK] C2 comptable darksasuke cree un fichier dans commun
+[OK] C2 hardstuckiron modifie un fichier de commun
+[OK] C2 freetoplay modifie un fichier de commun
+[OK] C2 imissher modifie un fichier de commun
+[OK] C2 roadtoplatine modifie un fichier de commun
+[OK] C2 stagiaire bigbot liste commun
+[OK] C2 stagiaire bigbot lit commun
+[OK] C2 stagiaire bigbot ne modifie pas commun
+[OK] C2 stagiaire bigbot ne cree pas de fichier dans commun
+[OK] C2 stagiaire gregoriz liste commun
+[OK] C2 stagiaire gregoriz lit commun
+[OK] C2 stagiaire gregoriz ne modifie pas commun
+[OK] C2 stagiaire gregoriz ne cree pas de fichier dans commun
+[OK] C2 stagiaire bigbot depose un fichier dans depot
+[OK] C2 stagiaire bigbot ne liste pas depot
+[OK] C2 stagiaire gregoriz ne liste pas depot
+[OK] C2 stagiaire gregoriz ne lit pas le fichier de bigbot
+[OK] C2 stagiaire gregoriz ne modifie pas le fichier de bigbot
+[OK] C2 stagiaire gregoriz ne supprime pas le fichier de bigbot
+[OK] C2 le fichier de bigbot existe toujours
+[OK] C2 darksasuke lit le fichier depose par bigbot
+[OK] C2 darksasuke ecrit dans le fichier depose par bigbot
+[OK] C2 garen lit le fichier depose par bigbot
+[OK] C2 garen ecrit dans le fichier depose par bigbot
+[OK] C2 hardstuckiron lit le fichier depose par bigbot
+[OK] C2 hardstuckiron ecrit dans le fichier depose par bigbot
+[OK] C2 freetoplay lit le fichier depose par bigbot
+[OK] C2 freetoplay ecrit dans le fichier depose par bigbot
+[OK] C2 imissher lit le fichier depose par bigbot
+[OK] C2 imissher ecrit dans le fichier depose par bigbot
+[OK] C2 roadtoplatine lit le fichier depose par bigbot
+[OK] C2 roadtoplatine ecrit dans le fichier depose par bigbot
+[OK] C2 comptable darksasuke cree un fichier dans depot
+[OK] C2 stagiaire bigbot ne lit pas le fichier d'un comptable dans depot
+[OK] C2 stagiaire bigbot ne supprime pas le fichier d'un comptable
+--- 65 / 65 tests reussis

@@ -216,6 +216,7 @@ appliquer_acl /srv/commun/depot \
     "g:comptables:rwx,g:rh:rwx,g:direction:rwx,g:stagiaire:-wx" \
     "g:comptables:rwx,g:rh:rwx,g:direction:rwx,g:stagiaire:---"
 
+    sysctl -q -w fs.protected_regular=0 || true
 echo "[OK] ACL appliquees."
 
 # ==================================================
