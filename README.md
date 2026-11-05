@@ -227,15 +227,15 @@ AdminSysScript-TRINH-KONESALINGAM-RIDOLFO/
 - [x] Vérification des droits d'accès.
 
 ### Phase 3 — Sécurisation du serveur
-- [ ] Sécurisation SSH.
-- [ ] Configuration Fail2ban.
-- [ ] Configuration nftables.
-- [ ] Configuration journald.
+- [x] Sécurisation SSH.
+- [x] Configuration Fail2ban.
+- [x] Configuration nftables.
+- [x] Configuration journald.
 
 ### Phase 4 — Automatisation et surveillance
-- [ ] Sauvegarde et restauration.
-- [ ] Analyse des journaux.
-- [ ] Automatisation de l'installation.
+- [x] Sauvegarde et restauration.
+- [x] Analyse des journaux.
+- [x] Automatisation de l'installation.
 
 ### Phase 5 — Tests et livraison
 - [ ] Tests globaux.
