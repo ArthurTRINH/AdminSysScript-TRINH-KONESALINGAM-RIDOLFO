@@ -1,0 +1,2 @@
+# support peut lancer uniquement ce script, en root, sans mot de passe (connexion par cle SSH)
+support ALL=(root) NOPASSWD: /usr/local/sbin/analyse_logs.sh
