@@ -23,6 +23,9 @@ readonly DIRECTIONS=(imissher roadtoplatine)
 readonly STAGIAIRES=(bigbot gregoriz)
 readonly PREFIXE=".verif_$$"
 
+# ajout a un fichier existant sans O_CREAT (sinon fs.protected_regular le refuse dans un dossier sticky)
+readonly AJOUT='printf x | dd of="$1" conv=nocreat,notrunc oflag=append status=none'
+
 OK=0
 TOTAL=0
 
@@ -77,10 +80,10 @@ test_dossiers_clients() {
     local f="$CLIENTS/${PREFIXE}_c" u
     reussit C2 "comptable ${COMPTABLES[0]} cree un fichier dans dossiers_clients" "${COMPTABLES[0]}" touch "$f"
     reussit C2 "comptable ${COMPTABLES[1]} modifie le fichier de ${COMPTABLES[0]} (ACL par defaut)" \
-        "${COMPTABLES[1]}" bash -c 'echo x >> "$1"' _ "$f"
+        "${COMPTABLES[1]}" bash -c "$AJOUT" _ "$f"
     for u in "${DIRECTIONS[@]}"; do
         reussit C2 "direction $u lit dossiers_clients" "$u" cat "$f"
-        refuse  C2 "direction $u ne modifie pas dossiers_clients" "$u" bash -c 'echo x >> "$1"' _ "$f"
+        refuse  C2 "direction $u ne modifie pas dossiers_clients" "$u" bash -c "$AJOUT" _ "$f"
         refuse  C2 "direction $u ne cree pas de fichier dans dossiers_clients" "$u" touch "$CLIENTS/${PREFIXE}_d"
     done
     for u in "${RHS[@]}" "${STAGIAIRES[@]}"; do
@@ -92,10 +95,10 @@ test_dossiers_clients() {
 test_rh() {
     local f="$RH/${PREFIXE}_rh" u
     reussit C2 "rh ${RHS[0]} cree un fichier dans /srv/rh" "${RHS[0]}" touch "$f"
-    reussit C2 "rh ${RHS[1]} modifie le fichier de ${RHS[0]}" "${RHS[1]}" bash -c 'echo x >> "$1"' _ "$f"
+    reussit C2 "rh ${RHS[1]} modifie le fichier de ${RHS[0]}" "${RHS[1]}" bash -c "$AJOUT" _ "$f"
     for u in "${DIRECTIONS[@]}"; do
         reussit C2 "direction $u lit /srv/rh" "$u" cat "$f"
-        refuse  C2 "direction $u ne modifie pas /srv/rh" "$u" bash -c 'echo x >> "$1"' _ "$f"
+        refuse  C2 "direction $u ne modifie pas /srv/rh" "$u" bash -c "$AJOUT" _ "$f"
     done
     for u in "${COMPTABLES[@]}" "${STAGIAIRES[@]}"; do
         refuse C2 "$u ne liste pas /srv/rh" "$u" ls "$RH"
@@ -107,12 +110,12 @@ test_commun() {
     local f="$COMMUN/${PREFIXE}_m" u
     reussit C2 "comptable ${COMPTABLES[0]} cree un fichier dans commun" "${COMPTABLES[0]}" touch "$f"
     for u in "${RHS[@]}" "${DIRECTIONS[@]}"; do
-        reussit C2 "$u modifie un fichier de commun" "$u" bash -c 'echo x >> "$1"' _ "$f"
+        reussit C2 "$u modifie un fichier de commun" "$u" bash -c "$AJOUT" _ "$f"
     done
     for u in "${STAGIAIRES[@]}"; do
         reussit C2 "stagiaire $u liste commun" "$u" ls "$COMMUN"
         reussit C2 "stagiaire $u lit commun" "$u" cat "$f"
-        refuse  C2 "stagiaire $u ne modifie pas commun" "$u" bash -c 'echo x >> "$1"' _ "$f"
+        refuse  C2 "stagiaire $u ne modifie pas commun" "$u" bash -c "$AJOUT" _ "$f"
         refuse  C2 "stagiaire $u ne cree pas de fichier dans commun" "$u" touch "$COMMUN/${PREFIXE}_s_$u"
     done
 }
@@ -125,7 +128,7 @@ test_depot() {
     refuse  C2 "stagiaire $s1 ne liste pas depot" "$s1" ls "$DEPOT"
     refuse  C2 "stagiaire $s2 ne liste pas depot" "$s2" ls "$DEPOT"
     refuse  C2 "stagiaire $s2 ne lit pas le fichier de $s1" "$s2" cat "$fs"
-    refuse  C2 "stagiaire $s2 ne modifie pas le fichier de $s1" "$s2" bash -c 'echo x >> "$1"' _ "$fs"
+    refuse  C2 "stagiaire $s2 ne modifie pas le fichier de $s1" "$s2" bash -c "$AJOUT" _ "$fs"
     refuse  C2 "stagiaire $s2 ne supprime pas le fichier de $s1" "$s2" rm -f "$fs"
     if [[ -e $fs ]]; then
         ok C2 "le fichier de $s1 existe toujours"
@@ -135,7 +138,7 @@ test_depot() {
 
     for u in "${COMPTABLES[@]}" "${RHS[@]}" "${DIRECTIONS[@]}"; do
         reussit C2 "$u lit le fichier depose par $s1" "$u" cat "$fs"
-        reussit C2 "$u ecrit dans le fichier depose par $s1" "$u" bash -c 'echo x >> "$1"' _ "$fs"
+        reussit C2 "$u ecrit dans le fichier depose par $s1" "$u" bash -c "$AJOUT" _ "$fs"
     done
 
     reussit C2 "comptable ${COMPTABLES[0]} cree un fichier dans depot" "${COMPTABLES[0]}" touch "$fc"

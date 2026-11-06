@@ -1,0 +1,18 @@
+# SUID/SGID attendus (lu par verifier.sh, test D3). Format : chemin  # role
+# Liste reelle de la VM : sudo find / -xdev -type f \( -perm -4000 -o -perm -2000 \) -exec ls -l {} \;
+# Supprimer les lignes absentes de la VM, ajouter (et justifier) les autres.
+/usr/bin/passwd                              # SUID : change son mot de passe
+/usr/bin/chfn                                # SUID : modifie ses infos dans /etc/passwd
+/usr/bin/chsh                                # SUID : change son shell
+/usr/bin/gpasswd                             # SUID : administration des groupes
+/usr/bin/newgrp                              # SUID : change de groupe courant
+/usr/bin/su                                  # SUID : change d'identite
+/usr/bin/sudo                                # SUID : elevation controlee par /etc/sudoers.d
+/usr/bin/mount                               # SUID : montage des volumes "user" de fstab
+/usr/bin/umount                              # SUID : demontage correspondant
+/usr/lib/openssh/ssh-keysign                 # SUID : authentification hostbased (non utilisee)
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper  # SUID : activation des services D-Bus
+/usr/bin/chage                               # SGID shadow : lit l'expiration de son compte
+/usr/bin/expiry                              # SGID shadow : verifie l'expiration du mot de passe
+/usr/sbin/unix_chkpwd                        # SGID shadow : PAM verifie le mot de passe
+/usr/bin/wall                                # SGID tty : message a tous les terminaux

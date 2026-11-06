@@ -1,0 +1,7 @@
+// D1 - Mises a jour de securite automatiques (unattended-upgrades)
+// Installe en /etc/apt/apt.conf.d/20auto-upgrades par installer.sh.
+// La liste des depots concernes (Debian-Security) est celle par defaut
+// de /etc/apt/apt.conf.d/50unattended-upgrades.
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "7";

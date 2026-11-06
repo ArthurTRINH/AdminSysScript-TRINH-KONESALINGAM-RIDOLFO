@@ -1,0 +1,12 @@
+# B2 - Planification de la sauvegarde : tous les jours a 02:30
+# Persistent=true : si la VM etait eteinte a 02:30, la sauvegarde part au demarrage.
+[Unit]
+Description=Planification quotidienne de la sauvegarde Chiffres & Co
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+Persistent=true
+RandomizedDelaySec=10m
+
+[Install]
+WantedBy=timers.target

@@ -4,15 +4,19 @@
 *.swp
 *~
 
-# Clés privées SSH
+# Cles privees SSH : jamais dans le depot
 id_rsa
 id_ed25519
+id_ecdsa
 *.pem
 *.key
+# Dans config/keys, seules les cles publiques .pub sont versionnees
+config/keys/*
+!config/keys/*.pub
 
 # Sauvegardes locales
 backups/
 
-# Fichiers système
+# Fichiers systeme
 .DS_Store
 Thumbs.db

@@ -1,4 +1,8 @@
 login;nom;groupe_principal;groupes_secondaires
+trinh;Trinh;admins;acces_ssh
+konesalingam;Konesalingam;admins;acces_ssh
+ridolfo;Ridolfo;admins;acces_ssh
+support;Compte support;support;acces_ssh
 darksasuke;darksasuke;comptables;
 garen;garen;comptables;
 hardstuckiron;hardstuckiron;rh;

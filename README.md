@@ -1,274 +1,78 @@
 # AdminSysScript — Chiffres & Co
 
-![Linux](https://img.shields.io/badge/OS-Linux-blue)
-![Bash](https://img.shields.io/badge/Language-Bash-green)
-![Git](https://img.shields.io/badge/Version_Control-Git-orange)
-![Status](https://img.shields.io/badge/Status-In_Development-orange)
+Projet XTI302-CYB (EFREI Paris) : durcir un serveur Debian 13 minimal, automatiser sa configuration par des scripts et la prouver avec `verifier.sh`.
 
-## 1. Présentation du projet
+Contexte choisi : B — cabinet comptable Chiffres & Co. Trinôme : Trinh, Konesalingam, Ridolfo.
 
-**AdminSysScript** est un projet d'administration et de sécurisation d'un serveur Linux réalisé dans le cadre de notre formation en cybersécurité à EFREI Paris.
-
-Le projet repose sur un contexte professionnel fictif : le cabinet comptable **Chiffres & Co**.
-
-L'objectif est de développer des scripts Bash permettant d'automatiser la gestion des utilisateurs, des groupes, des répertoires, des permissions et de la sécurité du serveur.
-
-## 2. Membres du projet
-
-- Trinh
-- Konesalingam
-- Ridolfo
-
-## 3. Contexte professionnel
-
-Le cabinet comptable est organisé en quatre groupes métier.
-
-| Groupe | Utilisateurs |
-|---|---|
-| Comptables | darksasuke, garen |
-| RH | hardstuckiron, freetoplay |
-| Direction | imissher, roadtoplatine |
-| Stagiaires | bigbot, gregoriz |
-
-**Total : 8 utilisateurs et 4 groupes métier.**
-
-## 4. Organisation des répertoires du serveur
-
-Le serveur doit disposer de quatre répertoires principaux :
-
-| Répertoire | Fonction | Propriétaire prévu |
-|---|---|---|
-| `/srv/dossiers_clients` | Gestion des dossiers clients | root:comptables |
-| `/srv/rh` | Gestion des ressources humaines | root:rh |
-| `/srv/commun` | Espace de travail partagé | root:comptables |
-| `/srv/commun/depot` | Espace de dépôt de fichiers | root:comptables |
-
-Ces répertoires sont créés automatiquement par le script `creer_comptes.sh`.
-
-## 5. Matrice des permissions attendues
-
-| Répertoire | Comptables | RH | Direction | Stagiaires |
-|---|---|---|---|---|
-| `/srv/dossiers_clients` | Lecture/Écriture | Aucun accès | Lecture | Aucun accès |
-| `/srv/rh` | Aucun accès | Lecture/Écriture | Lecture | Aucun accès |
-| `/srv/commun` | Lecture/Écriture | Lecture/Écriture | Lecture/Écriture | Lecture |
-| `/srv/commun/depot` | Lecture/Écriture | Lecture/Écriture | Lecture/Écriture | Dépôt seul |
-
-Les permissions détaillées (permissions classiques et ACL, y compris ACL par défaut) sont configurées par `creer_comptes.sh` et vérifiées par `tests_acl.sh`.
-
-## 6. Travail réalisé
-
-### Phase 1 — Préparation du projet
-
-- Organisation de l'arborescence GitHub.
-- Organisation des dossiers `config/` et `docs/`.
-- Vérification des fichiers existants.
-- Nettoyage des fichiers de test inutiles.
-- Vérification du dépôt Git.
-- Création et vérification du fichier `comptes.csv`.
-- Définition des huit utilisateurs et des quatre groupes métier.
-
-### Phase 2 — Gestion des comptes et des répertoires
-
-#### Partie 3 — Création automatique des groupes et utilisateurs
-
-Le script `creer_comptes.sh` a été développé pour :
-
-- Vérifier que le script est exécuté avec les privilèges administrateur.
-- Vérifier la présence des commandes nécessaires.
-- Vérifier la présence et la structure du fichier `comptes.csv`.
-- Créer les quatre groupes métier.
-- Vérifier si les groupes existent déjà.
-- Créer les huit comptes utilisateurs.
-- Définir les groupes principaux.
-- Ajouter les groupes secondaires lorsqu'ils sont renseignés.
-- Détecter les utilisateurs déjà existants et mettre à jour leur groupe principal.
-
-#### Partie 4 — Création de l'arborescence des répertoires
-
-Le script permet également de :
-
-- Créer `/srv/dossiers_clients`.
-- Créer `/srv/rh`.
-- Créer `/srv/commun`.
-- Créer `/srv/commun/depot`.
-- Définir les propriétaires et groupes associés.
-- Afficher les informations des utilisateurs et des répertoires après configuration.
-
-### 6.1 Fonctionnement de creer_comptes.sh
-
-Le script est organisé en plusieurs étapes :
-
-1. Vérification des privilèges administrateur.
-2. Vérification des commandes nécessaires.
-3. Localisation et vérification du fichier CSV.
-4. Création des groupes métier.
-5. Création ou mise à jour des utilisateurs.
-6. Création des répertoires.
-7. Attribution des propriétaires et groupes.
-8. Vérification finale des utilisateurs et répertoires.
-
-### 6.2 Commandes Linux utilisées
-
-| Commande | Utilisation |
-|---|---|
-| `groupadd` | Création des groupes |
-| `getent` | Vérification de l'existence des groupes |
-| `useradd` | Création des utilisateurs |
-| `usermod` | Modification des comptes et groupes |
-| `id` | Vérification des utilisateurs et groupes |
-| `mkdir -p` | Création des répertoires |
-| `chown` | Attribution des propriétaires et groupes |
-| `awk` | Vérification de la structure du CSV |
-| `tail` | Ignorer l'en-tête du CSV |
-| `ls -ld` | Affichage des informations des répertoires |
-
-## 7. Fichier comptes.csv
-
-Le fichier `comptes.csv` centralise les informations des utilisateurs.
-
-Format utilisé :
-
-```csv
-login;nom;groupe_principal;groupes_secondaires
-darksasuke;darksasuke;comptables;
-garen;garen;comptables;
-hardstuckiron;hardstuckiron;rh;
-freetoplay;freetoplay;rh;
-imissher;imissher;direction;
-roadtoplatine;roadtoplatine;direction;
-bigbot;bigbot;stagiaire;
-gregoriz;gregoriz;stagiaire;
-```
-
-Le séparateur utilisé est le point-virgule `;`.
-
-## 8. Vérifications réalisées
-
-Le script `creer_comptes.sh` a passé les vérifications statiques suivantes sur Kali Linux :
-
-| Vérification | Résultat |
-|---|---|
-| `bash -n creer_comptes.sh` | Réussi |
-| `shellcheck creer_comptes.sh` | Réussi |
-| Vérification de l'en-tête CSV | Réussie |
-| Vérification des quatre colonnes | Réussie |
-| Vérification des huit utilisateurs | Réussie |
-| Vérification des quatre groupes | Réussie |
-
-**Important :** les tests fonctionnels de création des comptes et des répertoires sur le serveur cible restent à effectuer. La validation syntaxique ne garantit pas encore le fonctionnement complet du script.
-
-## 9. Arborescence actuelle du projet
+## Contenu du dépôt
 
 ```text
-AdminSysScript-TRINH-KONESALINGAM-RIDOLFO/
-│
-├── README.md
-├── DOSSIER.md
-├── comptes.csv
-│
-├── installer.sh
-├── creer_comptes.sh
-
-├── tests_acl.sh
-├── comptes.csv
-├── docs/
-│   └── resultats_tests_acl.txt
-└── README.md 
-├── analyse_logs.sh
-├── sauvegarde.sh
-├── verifier.sh
-│
+.
+├── README.md                 ce fichier
+├── DOSSIER.md                dossier (conformité, choix techniques, défense, restauration)
+├── comptes.csv               comptes et groupes (login;nom;groupe_principal;groupes_secondaires)
+├── installer.sh              reconstruit toute la configuration sur une Debian vierge
+├── creer_comptes.sh          comptes, groupes, clés SSH, /srv, droits et ACL (C1, C2, C4)
+├── preparer_disque.sh        formate UNE fois le second disque (manuel, avec confirmation)
+├── analyse_logs.sh           rapport des connexions SSH, code 1 si seuil dépassé (J4)
+├── sauvegarde.sh             sauvegarde rsync incrémentale versionnée (B1 à B3)
+├── verifier.sh               teste chaque exigence : [OK]/[KO]
+├── tests_acl.sh              tests détaillés des droits sur /srv (C2)
 ├── config/
-│   ├── fail2ban/
-│   │   └── jail.d/
-│   │       └── sshd.conf
-│   │
-│   ├── ssh/
-│   │   └── sshd_config.d/
-│   │       └── hardening.conf
-│   │
-│   ├── sudoers.d/
-│   │   └── admins
-│   │
-│   ├── keys/
-│   ├── nftables.conf
-│   └── journald.conf
-│
+│   ├── ssh/sshd_config.d/00-hardening.conf   S1 à S5
+│   ├── sudoers.d/admins, support             C3
+│   ├── fail2ban/jail.d/sshd.conf             J1
+│   ├── nftables.conf                         J2
+│   ├── journald.conf                         J3
+│   ├── apt/20auto-upgrades                   D1
+│   ├── systemd/sauvegarde.{service,timer}    B2
+│   ├── suid_attendus.txt                     D3
+│   └── keys/<login>.pub                      clés publiques des comptes de acces_ssh
 └── docs/
-    └── restauration.md
+    ├── restauration.md                       B4
+    └── resultats_tests_acl.txt
 ```
 
-## 10. Technologies utilisées
+## Prérequis
 
-- Linux : environnement serveur.
-- Bash : automatisation des tâches.
-- Git et GitHub : gestion du code et collaboration.
-- ACL : gestion avancée des permissions.
-- SSH : administration distante sécurisée.
-- Fail2ban : protection contre les tentatives de connexion.
-- nftables : filtrage réseau.
-- systemd-journald : gestion des journaux système.
+- Une VM Debian 13 minimale avec SSH et un second disque de 1 à 2 Go.
+- Les clés publiques des comptes de `acces_ssh` dans `config/keys/` (jamais de clé privée).
+- Uniquement des paquets des dépôts Debian officiels (installés par `installer.sh`).
 
-## 11. État d'avancement
+## Installation
 
-### Phase 1 — Préparation du projet
-- [x] Organisation du dépôt GitHub.
-- [x] Préparation de l'arborescence.
-- [x] Nettoyage des fichiers de test.
-- [x] Vérification du CSV.
-- [x] Définition des utilisateurs et groupes.
-
-### Phase 2 — Gestion des comptes et permissions
-- [x] Développement du script de création des comptes.
-- [x] Développement de la création des répertoires.
-- [x] Tests fonctionnels sur le serveur cible.
-- [x] Configuration des permissions ACL.
-- [x] Vérification des droits d'accès.
-
-### Phase 3 — Sécurisation du serveur
-- [x] Sécurisation SSH.
-- [x] Configuration Fail2ban.
-- [x] Configuration nftables.
-- [x] Configuration journald.
-
-### Phase 4 — Automatisation et surveillance
-- [x] Sauvegarde et restauration.
-- [x] Analyse des journaux.
-- [x] Automatisation de l'installation.
-
-### Phase 5 — Tests et livraison
-- [ ] Tests globaux.
-- [ ] Documentation finale.
-- [ ] Validation du projet.
-- [ ] Préparation de la présentation.
-
-## 12. Installation et utilisation
-
-Le projet est actuellement en développement.
-
-Le script de création des comptes doit être exécuté sur le serveur Linux cible avec les privilèges administrateur.
-
-Commande prévue :
+Depuis le dossier du dépôt copié sur la Debian :
 
 ```bash
-sudo ./creer_comptes.sh
+sudo ./preparer_disque.sh /dev/sdb     # une seule fois, demande une confirmation
+sudo ./installer.sh                    # passage 1 : comptes, services, SSH
+sudo passwd trinh                      # mot de passe sudo d'au moins un admin
+# tester dans un 2e terminal : ssh -i ~/.ssh/chiffres_trinh trinh@192.168.56.101 puis sudo -v
+sudo ./installer.sh                    # passage 2 : verrouille root, retire les autres comptes de sudo
 ```
 
-Ne pas exécuter cette commande sur une machine de développement sans avoir vérifié les conséquences sur ses comptes et ses répertoires système.
+`installer.sh` peut être relancé sans danger. Il ne formate jamais de disque.
 
-## 13. Sécurité
+## Vérification
 
-- Ne jamais stocker de mots de passe en clair dans le dépôt.
-- Ne jamais publier de clés privées SSH.
-- Respecter le principe du moindre privilège.
-- Limiter les accès selon les fonctions des utilisateurs.
-- Vérifier les permissions des répertoires.
-- Prévoir des sauvegardes régulières.
+```bash
+sudo ./verifier.sh ; echo "code : $?"
+```
 
----
+Une ligne `[OK]` ou `[KO]` par test, puis `--- N / M tests réussis`. Code de sortie 0 si tout est conforme.
 
-**AdminSysScript — Cabinet comptable Chiffres & Co**
+## État d'avancement
 
-Projet étudiant — EFREI Paris  
-Développement en cours.
+Ne cocher qu'avec une preuve (sortie de `verifier.sh` sur la VM).
+
+- [ ] `installer.sh` testé sur la VM
+- [ ] `verifier.sh` : tous les tests [OK]
+- [ ] `installer.sh` testé depuis le snapshot vierge, puis relancé une 2e fois
+- [ ] Bannissement fail2ban testé depuis l'hôte
+- [ ] Restauration testée (docs/restauration.md complété)
+- [ ] DOSSIER.md complété (numéros ANSSI vérifiés)
+
+## Sécurité
+
+- Aucun mot de passe ni clé privée dans le dépôt.
+- Les scripts lancés en root sont dans `/usr/local/sbin`, appartiennent à root et ne sont modifiables que par lui.
