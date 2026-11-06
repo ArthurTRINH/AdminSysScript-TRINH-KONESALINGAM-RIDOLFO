@@ -65,12 +65,12 @@ Une ligne `[OK]` ou `[KO]` par test, puis `--- N / M tests réussis`. Code de so
 
 Ne cocher qu'avec une preuve (sortie de `verifier.sh` sur la VM).
 
-- [ ] `installer.sh` testé sur la VM
-- [ ] `verifier.sh` : tous les tests [OK]
-- [ ] `installer.sh` testé depuis le snapshot vierge, puis relancé une 2e fois
-- [ ] Bannissement fail2ban testé depuis l'hôte
-- [ ] Restauration testée (docs/restauration.md complété)
-- [ ] DOSSIER.md complété (numéros ANSSI vérifiés)
+- [x] `installer.sh` testé sur la VM
+- [x] `verifier.sh` : tous les tests [OK]
+- [] `installer.sh` testé depuis le snapshot vierge, puis relancé une 2e fois
+- [x] Bannissement fail2ban testé depuis l'hôte
+- [x] Restauration testée (docs/restauration.md complété)
+- [x] DOSSIER.md complété (numéros ANSSI vérifiés)
 
 ## Sécurité
 
