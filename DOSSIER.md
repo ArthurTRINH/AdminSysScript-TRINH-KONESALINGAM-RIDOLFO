@@ -1,33 +1,35 @@
 # Dossier — AdminSysScript, Chiffres & Co (contexte B)
 
-> Brouillon : remplacer chaque « À COMPLÉTER » par vos résultats réels. Les numéros ANSSI-BP-028 sont à relever dans le guide officiel (lien en bas). Chaque membre doit pouvoir défendre ces justifications à l'oral.
+
 
 ## 1. Tableau de conformité
 
 | ID | Ce que nous avons fait | Test dans verifier.sh | ANSSI |
 |---|---|---|---|
-| C1 | `creer_comptes.sh` lit `comptes.csv`, crée les groupes et comptes s'ils n'existent pas, sinon les met à jour : relançable sans doublon | `test_C1` | À COMPLÉTER |
-| C2 | `/srv/*` : propriétaire root, `chmod 2770` (setgid), `depot` en `3770` (sticky), ACL de groupe + ACL par défaut | `test_C2` : accès permis et refusés testés avec les vrais comptes | À COMPLÉTER |
-| C3 | `admins` : `ALL=(ALL:ALL) ALL` ; `support` : uniquement `analyse_logs.sh` ; `vboxuser` retiré du groupe `sudo` | `test_C3` | À COMPLÉTER |
-| C4 | `passwd -l root` ; homes en `0700` et `HOME_MODE 0700` | `test_C4` | À COMPLÉTER |
-| S1 | `PasswordAuthentication no`, `KbdInteractiveAuthentication no`, clé publique seule | `test_S1` : `sshd -T` + vraie connexion sans clé refusée | À COMPLÉTER |
-| S2 | `PermitRootLogin no` | `test_S2` | À COMPLÉTER |
-| S3 | `AllowGroups acces_ssh` | `test_S3` : connexion réelle d'un comptable refusée | À COMPLÉTER |
+| C1 | `creer_comptes.sh` lit `comptes.csv`, crée les groupes et comptes s'ils n'existent pas, sinon les met à jour : relançable sans doublon | `test_C1` |  |
+| C2 | `/srv/*` : propriétaire root, `chmod 2770` (setgid), `depot` en `3770` (sticky), ACL de groupe + ACL par défaut | `test_C2` : accès permis et refusés testés avec les vrais comptes |  |
+| C3 | `admins` : `ALL=(ALL:ALL) ALL` ; `support` : uniquement `analyse_logs.sh` ; `vboxuser` retiré du groupe `sudo` | `test_C3` |  |
+| C4 | `passwd -l root` ; homes en `0700` et `HOME_MODE 0700` | `test_C4` |  |
+| S1 | `PasswordAuthentication no`, `KbdInteractiveAuthentication no`, clé publique seule | `test_S1` : `sshd -T` + vraie connexion sans clé refusée |  |
+| S2 | `PermitRootLogin no` | `test_S2` |  |
+| S3 | `AllowGroups acces_ssh` | `test_S3` : connexion réelle d'un comptable refusée |  |
 | S4 | `MaxAuthTries 3`, `ChannelTimeout session=15m` | `test_S4` | – |
 | S5 | `/etc/ssh/sshd_config.d/00-hardening.conf`, `sshd -t` avant `reload` | `test_S5` | – |
-| J1 | jail `sshd` : backend systemd, 3 échecs / 10 min, bannissement 1 h via nftables | `test_J1` | À COMPLÉTER |
-| J2 | `nftables.conf` : policy drop en entrée, established/related, lo, tcp/22 ; sans `flush ruleset` | `test_J2` | À COMPLÉTER |
-| J3 | `Storage=persistent` (`journald.conf.d/99-chiffres-co.conf`) | `test_J3` | À COMPLÉTER |
+| J1 | jail `sshd` : backend systemd, 3 échecs / 10 min, bannissement 1 h via nftables | `test_J1` |  |
+| J2 | `nftables.conf` : policy drop en entrée, established/related, lo, tcp/22 ; sans `flush ruleset` | `test_J2` |  |
+| J3 | `Storage=persistent` (`journald.conf.d/99-chiffres-co.conf`) | `test_J3` |  |
 | J4 | `analyse_logs.sh` : échecs par IP, comptes visés, réussites ; code 1 si seuil dépassé | `test_J4` | – |
-| B1 | `sauvegarde.sh` : `rsync -aAXH --link-dest`, versions datées sur le second disque, 7 versions | `test_B1` | À COMPLÉTER |
+| B1 | `sauvegarde.sh` : `rsync -aAXH --link-dest`, versions datées sur le second disque, 7 versions | `test_B1` |  |
 | B2 | `sauvegarde.timer` (02:30), journalisation `logger -t sauvegarde` | `test_B2` | – |
 | B3 | `/sauvegardes` en `root:admins 0750`, montage `nodev,nosuid,noexec` | `test_B3` | – |
 | B4 | Procédure dans `docs/restauration.md` | `test_B4` | – |
-| D1 | `unattended-upgrades` + `20auto-upgrades` | `test_D1` | À COMPLÉTER |
-| D2 | Seul sshd écoute (le pare-feu bloque le reste) | `test_D2` | À COMPLÉTER |
-| D3 | Recherche limitée aux systèmes de fichiers réels ; SUID listés dans `config/suid_attendus.txt` | `test_D3` | À COMPLÉTER |
+| D1 | `unattended-upgrades` + `20auto-upgrades` | `test_D1` |  |
+|  D2 | ss -tulpn montre que seul SSH écoute sur le réseau. avahi-daemon écoutait en UDP : on l'a masqué. cupsd n'écoute que sur 127.0.0.1. |  |
+| D3 | Recherche limitée aux systèmes de fichiers réels ; SUID listés dans `config/suid_attendus.txt` | `test_D3` |  |
 
-Résultat de `verifier.sh` sur la VM reconstruite : À COMPLÉTER (`--- N / M tests réussis`).
+Résultat de `verifier.sh` sur la VM reconstruite : 93 / 93 tests réussis, code de sortie 0 
+<img width="755" height="567" alt="image" src="https://github.com/user-attachments/assets/c4e20e84-2c60-4340-8ed7-ecf4345c2140" />
+
 
 ## 2. Choix techniques
 
@@ -35,19 +37,19 @@ Résultat de `verifier.sh` sur la VM reconstruite : À COMPLÉTER (`--- N / M te
 
 **Dossier dépôt.** Le stagiaire a `-wx` : il peut déposer un fichier mais pas lister. L'ACL par défaut lui donne `---` sur chaque nouveau fichier. Le sticky bit l'empêche de supprimer les fichiers des autres. On n'a pas désactivé `fs.protected_regular` : les tests utilisent `dd conv=nocreat`, qui teste les droits sans affaiblir le noyau.
 
-**SSH.** `MaxAuthTries 3` : À COMPLÉTER (justification). `ClientAliveInterval` ne ferme pas une session inactive, d'où `ChannelTimeout session=15m` (OpenSSH ≥ 9.2). Le fichier s'appelle `00-…` car sshd garde la première valeur lue.
+**SSH.** `MaxAuthTries 3` : le sujet impose 4 au maximum. Avec 3, on laisse une faute de frappe mais on limite la force brute . `ClientAliveInterval` ne ferme pas une session inactive, d'où `ChannelTimeout session=15m` (OpenSSH ≥ 9.2). Le fichier s'appelle `00-…` car sshd garde la première valeur lue.
 
-**fail2ban.** 3 échecs en 10 min, bannissement 1 h : À COMPLÉTER (compromis entre bloquer une attaque et ne pas pénaliser une erreur de frappe). Backend `systemd` car Debian 13 minimale n'a pas `auth.log`.
+**fail2ban.** 3 échecs en 10 min, bannissement 1 h : une heure arrête un robot sans bloquer longtemps un admin qui se trompe.  Backend `systemd` car Debian 13 minimale n'a pas `auth.log`.
 
-**nftables.** Pas de `flush ruleset` : il effacerait les bans de fail2ban. Rechargement par `systemctl reload nftables`, jamais `restart`. À CONFIRMER par votre test : la table `f2b-table` survit au rechargement.
+**nftables.** Pas de `flush ruleset` : il effacerait les bans de fail2ban. Rechargement par `systemctl reload nftables`, jamais `restart`. par Testé : l'IP bannie reste dans f2b-table après un reload. Testé .
 
-**Journal.** À COMPLÉTER (durée et taille choisies, et pourquoi).
+**Journal.** conservé après redémarrage, 500 Mo maximum, 3 mois. C'est assez pour retrouver une attaque récente sans remplir le disque .
 
-**Seuil d'analyse.** Plus de 5 connexions échouées par IP sur 24 h : À COMPLÉTER (justification).
+**Seuil d'analyse.** Plus de 5 connexions échouées par IP sur 24 h :en dessous, c'est sûrement une faute de frappe, au-dessus c'est suspect. Le seuil se change en argument .
 
-**Sauvegardes.** `rsync --link-dest` : versions complètes mais légères (liens physiques). L'écriture se fait dans `*.incomplete` puis la version est renommée : une sauvegarde interrompue n'est jamais prise pour valide. 7 versions = une semaine de retour arrière. Correctif dans le script, à confirmer par `test_B1` : rsync perd l'entrée `group::` de l'ACL des dossiers sticky (`depot`), le script la recopie depuis la source. `installer.sh` ne formate jamais : `preparer_disque.sh` le fait une fois, après confirmation.
+**Sauvegardes.** `rsync --link-dest` : versions complètes mais légères (liens physiques). L'écriture se fait dans `*.incomplete` puis la version est renommée : une sauvegarde interrompue n'est jamais prise pour valide. 7 versions = une semaine de retour arrière. Correctif dans le script, rsync perd l'entrée `group::` de l'ACL des dossiers sticky (`depot`), le script la recopie depuis la source. `installer.sh` ne formate jamais : `preparer_disque.sh` le fait une fois, après confirmation.
 
-**Écoutes réseau (D2).** À COMPLÉTER avec la sortie de `ss -tulpn`.
+**Écoutes réseau (D2).** Seul sshd écoute (le pare-feu bloque le reste) | `test_D2` | .
 
 ## 3. Défense
 
